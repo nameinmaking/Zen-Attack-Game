@@ -11,7 +11,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener{
 
     private static Background bg1,bg2;
     private StickRobo robot;
-    private Heliboy hb1,hb2;
+    private Zombie hb1,hb2;
     private Image image;
     // The currentSprite will contain the state of the character at that momemnt among the three
     private Image currentSprite,character,characterDown,characterJumped;
@@ -48,7 +48,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener{
         characterDown = getImage(base,"data/down.png");
         characterJumped = getImage(base,"data/jumped.png");
         background = getImage(base,"data/background.png");
-        heliboy = getImage(base,"data/heliboy.png");
+        heliboy = getImage(base, "data/zombie.png");
         currentSprite = character;
     }
 
@@ -56,8 +56,8 @@ public class StartingClass extends Applet implements Runnable, KeyListener{
     public void start() {
         bg1 = new Background(0,0);
         bg2 = new Background(2160,0);
-        hb1 = new Heliboy(340,360);
-        hb2 = new Heliboy(700,360);
+        hb1 = new Zombie(340,360);
+        hb2 = new Zombie(700,360);
         robot = new StickRobo();
 
         Thread thread = new Thread(this);
