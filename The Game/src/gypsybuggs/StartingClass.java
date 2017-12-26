@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.net.URL;
 import java.util.ArrayList;
+import gypsybuggs.framework.Animation;
 
 public class StartingClass extends Applet implements Runnable, KeyListener{
 
@@ -13,13 +14,20 @@ public class StartingClass extends Applet implements Runnable, KeyListener{
     private StickRobo robot;
     private Zombie hb1,hb2;
     private Image image;
+
     // The currentSprite will contain the state of the character at that momemnt among the three
-    private Image currentSprite,character,characterDown,characterJumped;
+    private Image currentSprite,character1,character2,character3,character4,characterDown,characterJumped;
     private Image background;
+
     // Enemy bots
-    private Image heliboy;
+    private Image zombie1,zombie2,zombie3,zombie4;
     private Graphics second;
     private URL base;
+
+    //Animation objects
+    // cAnim = character
+    // zAnim = zombie
+    private Animation cAnim,zAnim;
 
 
     // Initialize the whole scene
@@ -44,12 +52,37 @@ public class StartingClass extends Applet implements Runnable, KeyListener{
         System.out.println(base);
 
         // Image Setups
-        character = getImage(base,"data/character.png");
+        character1 = getImage(base,"data/character1.png");
+        character2 = getImage(base,"data/character2.png");
+        character3 = getImage(base,"data/character3.png");
+        character4 = getImage(base,"data/character4.png");
         characterDown = getImage(base,"data/down.png");
         characterJumped = getImage(base,"data/jumped.png");
+
+        zombie1 = getImage(base, "data/zombie1.png");
+        zombie2 = getImage(base, "data/zombie2.png");
+        zombie3 = getImage(base, "data/zombie3.png");
+        zombie4 = getImage(base, "data/zombie4.png");
+
         background = getImage(base,"data/background.png");
-        heliboy = getImage(base, "data/zombie.png");
-        currentSprite = character;
+
+        cAnim = new Animation();
+        cAnim.addFrame(character1,80);
+        cAnim.addFrame(character2,80);
+        cAnim.addFrame(character3,80);
+        cAnim.addFrame(character4,80);
+        cAnim.addFrame(character3,80);
+        cAnim.addFrame(character2,80);
+
+        zAnim = new Animation();
+        zAnim.addFrame(zombie1,1000);
+        zAnim.addFrame(zombie2,1000);
+        zAnim.addFrame(zombie3,1000);
+        zAnim.addFrame(zombie4,1000);
+        zAnim.addFrame(zombie3,1000);
+        zAnim.addFrame(zombie2,1000);
+
+        currentSprite = cAnim.getImage();
     }
 
     @Override
@@ -88,7 +121,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener{
             if (robot.isJumped())
                 currentSprite = characterJumped;
             else if (robot.isJumped()==false && robot.isDucked()==false)
-                currentSprite = character;
+                currentSprite = cAnim.getImage();
 
             ArrayList projectiles = robot.getProjectiles();
             for (int i=0;i<projectiles.size();i++)
@@ -105,6 +138,8 @@ public class StartingClass extends Applet implements Runnable, KeyListener{
             hb2.update();
             bg1.update();
             bg2.update();
+
+            animate();
             repaint();  //To draw every object on the scene once again
 
             try {
@@ -116,6 +151,12 @@ public class StartingClass extends Applet implements Runnable, KeyListener{
             }
         }
 
+    }
+
+    public void animate()
+    {
+        cAnim.update(10);
+        zAnim.update(50);
     }
 
     //Implicitly called automatically and will loop over and over again
@@ -155,8 +196,8 @@ public class StartingClass extends Applet implements Runnable, KeyListener{
 
 
         g.drawImage(currentSprite,robot.getCenterX()-61,robot.getCenterY()-63,this);
-        g.drawImage(heliboy,hb1.getCenterX()-48,hb1.getCenterY()-48,this);
-        g.drawImage(heliboy,hb2.getCenterX()-48,hb2.getCenterY()-48,this);
+        g.drawImage(zAnim.getImage(),hb1.getCenterX()-48,hb1.getCenterY()-48,this);
+        g.drawImage(zAnim.getImage(),hb2.getCenterX()-48,hb2.getCenterY()-48,this);
     }
 
 
@@ -206,7 +247,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener{
                 System.out.println("Stop moving UP");
                 break;
             case KeyEvent.VK_DOWN:
-                currentSprite = character;
+                currentSprite = cAnim.getImage();
                 robot.setDucked(false);
                 break;
             case KeyEvent.VK_LEFT:
