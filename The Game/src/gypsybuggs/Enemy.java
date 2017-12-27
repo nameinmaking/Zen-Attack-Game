@@ -18,7 +18,9 @@ public class Enemy
     public void update()
     {
         centerX += speedX;
-        speedX = bg.getSpeedX();
+
+        // To compensate for the Parallax Scrolling of background
+        speedX = bg.getSpeedX()*5;
     }
 
     public void die()

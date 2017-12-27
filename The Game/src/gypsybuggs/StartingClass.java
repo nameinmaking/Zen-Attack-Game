@@ -30,6 +30,10 @@ public class StartingClass extends Applet implements Runnable, KeyListener{
     private Animation cAnim,zAnim;
 
 
+    public static Image tileDirt,tileOcean;
+    private ArrayList<Tile> tileArray = new ArrayList<Tile>();
+
+
     // Initialize the whole scene
     @Override
     public void init() {
@@ -65,6 +69,8 @@ public class StartingClass extends Applet implements Runnable, KeyListener{
         zombie4 = getImage(base, "data/zombie4.png");
 
         background = getImage(base,"data/background.png");
+        tileDirt = getImage(base,"data/tiledirt.png");
+        tileOcean = getImage(base,"data/tileocean.png");
 
         cAnim = new Animation();
         cAnim.addFrame(character1,80);
@@ -86,9 +92,37 @@ public class StartingClass extends Applet implements Runnable, KeyListener{
     }
 
     @Override
-    public void start() {
+    public void start()
+    {
+        int i,j;
+
+        // Background
         bg1 = new Background(0,0);
         bg2 = new Background(2160,0);
+
+        //Tiles
+        // Total possible locations: 200x12 = 2400
+        // Filling tiles in: 200x2 = 400
+        for (i=0;i<200;i++)
+        {
+            for (j=0;j<12;j++)
+            {
+                if (j==11)
+                {
+                    Tile t = new Tile(i,j,2);
+                    tileArray.add(t);
+                }
+                if (j==10)
+                {
+                    Tile t = new Tile (i,j,1);
+                    tileArray.add(t);
+                }
+            }
+        }
+
+
+
+        //Characters
         hb1 = new Zombie(340,360);
         hb2 = new Zombie(700,360);
         robot = new StickRobo();
@@ -133,6 +167,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener{
                     projectiles.remove(i);
             }
 
+            updateTile();
 
             hb1.update();
             hb2.update();
@@ -180,9 +215,12 @@ public class StartingClass extends Applet implements Runnable, KeyListener{
     //always called with the statement repaint() inside the method run()
     public void paint(Graphics g)
     {
-        // g.drawImage(img, x, y, observer)
+        // SYNTAX: g.drawImage(img, x, y, observer)
+
+        // background
         g.drawImage(background,bg1.getBgX(),bg1.getBgY(),this);
         g.drawImage(background,bg2.getBgX(),bg2.getBgY(),this);
+        paintTiles(g);
 
 
         // drawing bullets on the screen
@@ -194,12 +232,36 @@ public class StartingClass extends Applet implements Runnable, KeyListener{
             g.fillRect(p.getX(),p.getY(),10,5);
         }
 
-
+        // characters on the screen
         g.drawImage(currentSprite,robot.getCenterX()-61,robot.getCenterY()-63,this);
         g.drawImage(zAnim.getImage(),hb1.getCenterX()-48,hb1.getCenterY()-48,this);
         g.drawImage(zAnim.getImage(),hb2.getCenterX()-48,hb2.getCenterY()-48,this);
     }
 
+
+    private void updateTile()
+    {
+        int i;
+        Tile t;
+        for (i=0;i<tileArray.size();i++)
+        {
+            t = (Tile) tileArray.get(i);
+            t.update();
+        }
+    }
+
+    private void paintTiles(Graphics g)
+    {
+        int i;
+        Tile t;
+
+        // lopping from 0 to 2399
+        for (i=0;i<tileArray.size();i++)
+        {
+            t = (Tile) tileArray.get(i);
+            g.drawImage(t.getTileImage(),t.getTileX(),t.getTileY(),this);
+        }
+    }
 
     @Override
     public void keyTyped(KeyEvent e) {
