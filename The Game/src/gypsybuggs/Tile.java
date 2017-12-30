@@ -16,10 +16,16 @@ public class Tile
         tileY = y * 40;
         type = tileType;
 
-        if (type == 1)
-            tileImage = StartingClass.tileOcean;
-        else if (type ==2)
+        if (type == 5)
             tileImage = StartingClass.tileDirt;
+        else if (type ==8)
+            tileImage = StartingClass.tilegrassTop;
+        else if (type ==4)
+            tileImage = StartingClass.tilegrassLeft;
+        else if (type ==6)
+            tileImage = StartingClass.tilegrassRight;
+        else if (type ==2)
+            tileImage = StartingClass.tilegrassBot;
 
 
     }

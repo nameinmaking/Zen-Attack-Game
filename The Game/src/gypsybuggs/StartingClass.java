@@ -4,6 +4,7 @@ import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import gypsybuggs.framework.Animation;
@@ -30,7 +31,8 @@ public class StartingClass extends Applet implements Runnable, KeyListener{
     private Animation cAnim,zAnim;
 
 
-    public static Image tileDirt,tileOcean;
+    public static Image tilegrassTop,tilegrassBot,tilegrassLeft,tilegrassRight,tileDirt;
+
     private ArrayList<Tile> tileArray = new ArrayList<Tile>();
 
 
@@ -53,8 +55,6 @@ public class StartingClass extends Applet implements Runnable, KeyListener{
             ex.printStackTrace();
         }
 
-        System.out.println(base);
-
         // Image Setups
         character1 = getImage(base,"data/character1.png");
         character2 = getImage(base,"data/character2.png");
@@ -70,7 +70,10 @@ public class StartingClass extends Applet implements Runnable, KeyListener{
 
         background = getImage(base,"data/background.png");
         tileDirt = getImage(base,"data/tiledirt.png");
-        tileOcean = getImage(base,"data/tileocean.png");
+        tilegrassTop = getImage(base,"data/tilegrasstop.png");
+        tilegrassBot = getImage(base,"data/tilegrassbot.png");
+        tilegrassLeft = getImage(base,"data/tilegrassleft.png");
+        tilegrassRight = getImage(base,"data/tilegrassright.png");
 
         cAnim = new Animation();
         cAnim.addFrame(character1,80);
@@ -103,21 +106,31 @@ public class StartingClass extends Applet implements Runnable, KeyListener{
         //Tiles
         // Total possible locations: 200x12 = 2400
         // Filling tiles in: 200x2 = 400
-        for (i=0;i<200;i++)
+//        for (i=0;i<200;i++)
+//        {
+//            for (j=0;j<12;j++)
+//            {
+//                if (j==11)
+//                {
+//                    Tile t = new Tile(i,j,2);
+//                    tileArray.add(t);
+//                }
+//                if (j==10)
+//                {
+//                    Tile t = new Tile (i,j,1);
+//                    tileArray.add(t);
+//                }
+//            }
+//        }
+
+        //Initialize tiles
+        try
         {
-            for (j=0;j<12;j++)
-            {
-                if (j==11)
-                {
-                    Tile t = new Tile(i,j,2);
-                    tileArray.add(t);
-                }
-                if (j==10)
-                {
-                    Tile t = new Tile (i,j,1);
-                    tileArray.add(t);
-                }
-            }
+//            File currentDIr = new File(".");
+            loadMap("data/map1.txt");
+        }catch(IOException exr)
+        {
+            exr.printStackTrace();
         }
 
 
@@ -129,6 +142,56 @@ public class StartingClass extends Applet implements Runnable, KeyListener{
 
         Thread thread = new Thread(this);
         thread.start();
+    }
+
+    private void loadMap(String fileName) throws IOException
+    {
+        ArrayList lines = new ArrayList();
+        int width = 0;
+        int height = 0;
+        int i,j;
+        String line ="";
+        char ch;
+        Tile t;
+
+//        BufferedReader br = new BufferedReader(new FileReader("E:\\test.txt"));
+        InputStream in = getClass().getClassLoader().getResourceAsStream(fileName);
+        BufferedReader br = new BufferedReader(new InputStreamReader(in));
+
+
+        while(true)
+        {
+            line = br.readLine();
+
+            if (line == null)
+            {
+                br.close();
+                break;
+            }
+
+            if (!line.startsWith("!"))
+            {
+                lines.add(line);
+                width = Math.max(width, line.length());
+            }
+        }
+        height = lines.size();
+
+        for (j=0;j<12;j++)
+        {
+            line = lines.get(j).toString();
+            for (i=0;i<width;i++)
+            {
+                System.out.println(i + " is i ");
+
+                if (i<line.length())
+                {
+                    ch = line.charAt(i);
+                    t = new Tile(i,j,Character.getNumericValue(ch));
+                    tileArray.add(t);
+                }
+            }
+        }
     }
 
     @Override
