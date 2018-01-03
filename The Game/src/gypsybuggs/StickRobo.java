@@ -13,11 +13,11 @@ public class StickRobo
     // Constants
     final int JUMPSPEED = -15;
     final int MOVESPEED = 5;
-    final int GROUND= 382;
+//    final int GROUND= 377;
 
 
     private int centerX = 100;          // x-cordinate of Robot's centre
-    private int centerY = 382;          // y-cordinate of Robot's centre
+    private int centerY = 377;          // y-cordinate of Robot's centre
 
     private boolean jumped = false;     // true: when the StickRobo is in Air
     private boolean movingLeft = false;
@@ -29,7 +29,7 @@ public class StickRobo
 
     // For -ve speedX the character will move left
     private int speedX = 0;
-    private int speedY = 1;
+    private int speedY = 0;
 
     //Direct intialization and use of ArrayList than List
     private ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
@@ -58,9 +58,9 @@ public class StickRobo
 
         // Updates Y Position
         centerY += speedY;      //Add speedY to centerY to determine its new position
-        if (centerY + speedY >= GROUND)
-            setCenterY(GROUND);
-        // 382 is where the character's centerY would be if her were standing on the ground
+//        if (centerY + speedY >= GROUND)
+//            setCenterY(GROUND);
+//        // 382 is where the character's centerY would be if her were standing on the ground
 
 
         // Handles Jumping
@@ -68,12 +68,12 @@ public class StickRobo
             speedY += 1;    //while the character is in air, add 1 to his speedY.
             //NOTE: This will bring the character downwards!
 
-            if (centerY + speedY >= GROUND)
-            {
-                setCenterX(GROUND);
-                setSpeedY(0);
-                setJumped(false);
-            }
+//            if (centerY + speedY >= GROUND)
+//            {
+//                setCenterX(GROUND);
+//                setSpeedY(0);
+//                setJumped(false);
+//            }
 
         }
 
