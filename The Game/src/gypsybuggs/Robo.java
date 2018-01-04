@@ -84,8 +84,8 @@ public class Robo
         if (centerX + speedX <= 60) //if speedX plus centerX would bring the character outside the screen
             setCenterX(61);           //Fix the character's centerX at 60 pixels.
 
-        rect1.setRect(centerX-34,centerY-63,68,63);
-        rect2.setRect(rect1.getX(), rect1.getY()+63,68,64);
+        rect1.setRect(centerX-34,centerY-63,65,63);
+        rect2.setRect(rect1.getX(), rect1.getY()+63,65,64);
     }
 
     public void moveRight() {
