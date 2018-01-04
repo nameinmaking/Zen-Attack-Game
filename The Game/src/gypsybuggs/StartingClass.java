@@ -12,7 +12,7 @@ import gypsybuggs.framework.Animation;
 public class StartingClass extends Applet implements Runnable, KeyListener{
 
     private static Background bg1,bg2;
-    private StickRobo robot;
+    private Robo robot;
     private Zombie hb1,hb2;
     private Image image;
 
@@ -138,7 +138,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener{
         //Characters
         hb1 = new Zombie(340,360);
         hb2 = new Zombie(700,360);
-        robot = new StickRobo();
+        robot = new Robo();
 
         Thread thread = new Thread(this);
         thread.start();
@@ -295,6 +295,8 @@ public class StartingClass extends Applet implements Runnable, KeyListener{
             g.fillRect(p.getX(),p.getY(),10,5);
         }
 
+        g.drawRect((int)robot.rect1.getX(), (int)robot.rect1.getY(), (int)robot.rect1.getWidth(), (int)robot.rect1.getHeight());
+        g.drawRect((int)robot.rect2.getX(), (int)robot.rect2.getY(), (int)robot.rect2.getWidth(), (int)robot.rect2.getHeight());
         // characters on the screen
         g.drawImage(currentSprite,robot.getCenterX()-61,robot.getCenterY()-63,this);
         g.drawImage(zAnim.getImage(),hb1.getCenterX()-48,hb1.getCenterY()-48,this);

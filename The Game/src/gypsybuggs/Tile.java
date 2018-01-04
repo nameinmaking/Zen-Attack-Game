@@ -7,6 +7,8 @@ public class Tile
     int tileX,tileY,speedX,type;
     Image tileImage;
 
+    private Rectangle r;
+
     Background bg = StartingClass.getBg1();
 
     public Tile(int x,int y,int tileType)
@@ -15,6 +17,7 @@ public class Tile
         tileX = x * 40;
         tileY = y * 40;
         type = tileType;
+        r = new Rectangle();
 
         if (type == 5)
             tileImage = StartingClass.tileDirt;
@@ -26,6 +29,8 @@ public class Tile
             tileImage = StartingClass.tilegrassRight;
         else if (type ==2)
             tileImage = StartingClass.tilegrassBot;
+        else                //when no tile is found in the area,ie, no platform is present
+            type = 0;
 
 
     }
@@ -46,9 +51,26 @@ public class Tile
             setSpeedX(bg.getSpeedX()*5);
 
         tileX += speedX;
+
+        // setting tile bounding box values
+        r.setBounds(tileX,tileY,40,40);
+
+        //call collision detection
+        if (type!= 0)
+            checkVerticalCollision(Robo.rect1, Robo.rect2);
     }
 
+    //collision detection and action function
+    public void checkVerticalCollision(Rectangle rTop,Rectangle rBottom)
+    {
+        if (rTop.intersects(r))
+            System.out.println("Upper Collision");
 
+        if (rBottom.intersects(r))
+            System.out.println("Bottom Collision");
+    }
+
+    //Getters and Setters
     public int getTileX() {
         return tileX;
     }
