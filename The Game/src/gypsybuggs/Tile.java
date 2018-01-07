@@ -9,7 +9,8 @@ public class Tile
 
     private Rectangle r;
 
-    Background bg = StartingClass.getBg1();
+    private Robo robot = StartingClass.getRobot();
+    private Background bg = StartingClass.getBg1();
 
     public Tile(int x,int y,int tileType)
     {
@@ -40,24 +41,33 @@ public class Tile
     // Using the ocean tile to put in the Parallax Effect.
     public void update()
     {
-        if (type == 1)
-        {
-            if (bg.getSpeedX() == 0)
-                setSpeedX(-1);
-            else
-                setSpeedX(-2);
-        }
-        else
-            setSpeedX(bg.getSpeedX()*5);
-
+        speedX = bg.getSpeedX()*5;
         tileX += speedX;
-
-        // setting tile bounding box values
         r.setBounds(tileX,tileY,40,40);
 
-        //call collision detection
-        if (type!= 0)
-            checkVerticalCollision(Robo.rect1, Robo.rect2);
+        if (r.intersects(Robo.yellowRed)&&type!=0)
+        {
+            checkVerticalCollision(Robo.rect1,Robo.rect2);
+            checkSideCollision(Robo.gunRect,Robo.leftFoot,Robo.rightFoot);
+        }
+//        if (type == 1)
+//        {
+//            if (bg.getSpeedX() == 0)
+//                setSpeedX(-1);
+//            else
+//                setSpeedX(-2);
+//        }
+//        else
+//            setSpeedX(bg.getSpeedX()*5);
+//
+//        tileX += speedX;
+//
+//        // setting tile bounding box values
+//        r.setBounds(tileX,tileY,40,40);
+//
+//        //call collision detection
+//        if (type!= 0)
+//            checkVerticalCollision(Robo.rect1, Robo.rect2);
     }
 
     //collision detection and action function
@@ -68,6 +78,29 @@ public class Tile
 
         if (rBottom.intersects(r))
             System.out.println("Bottom Collision");
+    }
+
+    public void checkSideCollision(Rectangle gun,Rectangle leftF,Rectangle rightF)
+    {
+        if (type !=5 && type !=2 && type !=0)
+        {
+            if (gun.intersects(r))
+            {
+                robot.setCenterX(tileX + 85);
+                robot.setSpeedX(0);
+            }
+            else if (rightF.intersects(r))
+            {
+                robot.setCenterX(tileX-45);
+                robot.setSpeedX(0);
+            }
+
+            if (leftF.intersects(r))
+            {
+                robot.setCenterX(tileX + 85);
+                robot.setSpeedX(0);
+            }
+        }
     }
 
     //Getters and Setters

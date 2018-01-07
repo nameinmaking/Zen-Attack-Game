@@ -33,6 +33,12 @@ public class Robo
     private int speedY = 0;
     public static Rectangle rect1 = new Rectangle(0,0,0,0);
     public static Rectangle rect2 = new Rectangle(0,0,0,0);
+    public static Rectangle gunRect = new Rectangle(0,0,0,0);
+    public static Rectangle yellowRed = new Rectangle(0,0,0,0); // 25 tile region
+    //red -> x-coordinate collision virtual marker
+    //yellow -> x-coordinate collision virtual marker
+    public static  Rectangle leftFoot = new Rectangle(0,0,0,0); // 25 tile region;
+    public static  Rectangle rightFoot = new Rectangle(0,0,0,0); // 25 tile region;
 
     //Direct intialization and use of ArrayList than List
     private ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
@@ -67,18 +73,11 @@ public class Robo
 
 
         // Handles Jumping
-        if (jumped == true) {
-            speedY += 1;    //while the character is in air, add 1 to his speedY.
-            //NOTE: This will bring the character downwards!
+        speedY += 1;    //while the character is in air, add 1 to his speedY.
+        //NOTE: This will bring the character downwards!
 
-//            if (centerY + speedY >= GROUND)
-//            {
-//                setCenterX(GROUND);
-//                setSpeedY(0);
-//                setJumped(false);
-//            }
-
-        }
+        if (speedY>3)
+            setJumped(true);
 
         // Prevents going beyond X coordinate of 0
         if (centerX + speedX <= 60) //if speedX plus centerX would bring the character outside the screen
@@ -86,6 +85,9 @@ public class Robo
 
         rect1.setRect(centerX-34,centerY-63,65,63);
         rect2.setRect(rect1.getX(), rect1.getY()+63,65,64);
+        gunRect.setRect(rect1.getX()+65,rect1.getY()+32,20,20);
+        leftFoot.setRect(centerX-50,centerY+20,50,15);
+        rightFoot.setRect(centerX,centerY+20,50,15);
     }
 
     public void moveRight() {

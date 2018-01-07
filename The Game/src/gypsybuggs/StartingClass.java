@@ -12,7 +12,7 @@ import gypsybuggs.framework.Animation;
 public class StartingClass extends Applet implements Runnable, KeyListener{
 
     private static Background bg1,bg2;
-    private Robo robot;
+    private static Robo robot;
     private Zombie hb1,hb2;
     private Image image;
 
@@ -275,6 +275,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener{
         g.drawImage(image,0,0,this);
     }
 
+
     //always called with the statement repaint() inside the method run()
     public void paint(Graphics g)
     {
@@ -297,6 +298,9 @@ public class StartingClass extends Applet implements Runnable, KeyListener{
 
         g.drawRect((int)robot.rect1.getX(), (int)robot.rect1.getY(), (int)robot.rect1.getWidth(), (int)robot.rect1.getHeight());
         g.drawRect((int)robot.rect2.getX(), (int)robot.rect2.getY(), (int)robot.rect2.getWidth(), (int)robot.rect2.getHeight());
+        g.drawRect((int)robot.gunRect.getX(), (int)robot.gunRect.getY(), (int)robot.gunRect.getWidth(), (int)robot.gunRect.getHeight());
+        g.drawRect((int)robot.leftFoot.getX(), (int)robot.leftFoot.getY(), (int)robot.leftFoot.getWidth(), (int)robot.leftFoot.getHeight());
+        g.drawRect((int)robot.rightFoot.getX(), (int)robot.rightFoot.getY(), (int)robot.rightFoot.getWidth(), (int)robot.rightFoot.getHeight());
         // characters on the screen
         g.drawImage(currentSprite,robot.getCenterX()-61,robot.getCenterY()-63,this);
         g.drawImage(zAnim.getImage(),hb1.getCenterX()-48,hb1.getCenterY()-48,this);
@@ -397,6 +401,10 @@ public class StartingClass extends Applet implements Runnable, KeyListener{
 
     public static Background getBg2() {
         return bg2;
+    }
+
+    public static Robo getRobot() {
+        return robot;
     }
 
 }
